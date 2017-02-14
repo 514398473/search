@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<context:annotation-config/>
+	<!-- 引入dbconfig.properties属性文件 -->
+	<!--<context:property-placeholder location="classpath:db.properties" />-->
+	<!-- 自动扫描(自动注入)，扫描wei.jiang.ssmdemo.service这个包以及它的子包的所有使用@Service注解标注的类 -->
+<!--	<context:component-scan base-package="com.xz.*.service" />-->
+
+
+	<!-- 数据源，使用dbcp -->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${touna.username}"></property>
+		<property name="password" value="${touna.password}"></property>
+		&lt;!&ndash;maxActive: 最大连接数量 &ndash;&gt;
+		<property name="maxActive" value="${touna.maxActive}" />
+		&lt;!&ndash;minIdle: 最小空闲连接 &ndash;&gt;
+		<property name="minIdle" value="${touna.minIdle}" />
+		&lt;!&ndash;maxIdle: 最大空闲连接 &ndash;&gt;
+		<property name="maxIdle" value="${touna.maxIdle}" />
+		&lt;!&ndash;initialSize: 初始化连接 &ndash;&gt;
+		<property name="initialSize" value="${touna.initialSize}" />
+		&lt;!&ndash; 连接被泄露时是否打印 &ndash;&gt;
+		<property name="logAbandoned" value="${touna.logAbandoned}" />
+		&lt;!&ndash;removeAbandoned: 是否自动回收超时连接 &ndash;&gt;
+		<property name="removeAbandoned" value="${touna.removeAbandoned}" />
+		&lt;!&ndash;removeAbandonedTimeout: 超时时间(以秒数为单位) &ndash;&gt;
+		<property name="removeAbandonedTimeout" value="${touna.removeAbandonedTimeout}" />
+		&lt;!&ndash;maxWait: 超时等待时间以毫秒为单位 60*1000等于60秒 &ndash;&gt;
+		<property name="maxWait" value="${touna.maxWait}" />
+		&lt;!&ndash; 在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. &ndash;&gt;
+		<property name="timeBetweenEvictionRunsMillis" value="${touna.timeBetweenEvictionRunsMillis}" />
+		&lt;!&ndash; 在每次空闲连接回收器线程(如果有)运行时检查的连接数量 &ndash;&gt;
+		<property name="numTestsPerEvictionRun" value="${touna.numTestsPerEvictionRun}" />
+		&lt;!&ndash; 1000 * 60 * 30 连接在池中保持空闲而不被空闲连接回收器线程 &ndash;&gt;
+		<property name="minEvictableIdleTimeMillis" value="${touna.minEvictableIdleTimeMillis}" />
+		&lt;!&ndash; SQL查询,用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,则查询必须是一个SQL SELECT并且必须返回至少一行记录 &ndash;&gt;
+		<property name="validationQuery" value="SELECT NOW() FROM DUAL" />
+	</bean>-->
+	<!-- ========================================针对myBatis的配置项============================== -->
+	<!-- 配置sqlSessionFactory -->
+	<!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		&lt;!&ndash; <property name="configLocation" value="classpath:mybatis-config.xml"
+			/> &ndash;&gt;
+		<property name="mapperLocations" value="classpath:com/xz/*/mapping/*.xml" />
+	</bean>-->
+
+	<!-- 配置扫描器 -->
+	<!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		&lt;!&ndash; 扫描cn.touna.mybatisdemo.dao这个包以及它的子包下的所有映射接口类 &ndash;&gt;
+		<property name="basePackage" value="com.xz.*.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>-->
+	<!-- ========================================分隔线========================================= -->
+	<!-- 配置Spring的事务管理器 -->
+	<!--<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>-->
+
+	<!-- 注解方式配置事物 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	<!-- 拦截器方式配置事物 -->
+	<!--<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="append*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="repair" propagation="REQUIRED" />
+			<tx:method name="delAndRepair" propagation="REQUIRED" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="find*" propagation="SUPPORTS" />
+			<tx:method name="load*" propagation="SUPPORTS" />
+			<tx:method name="search*" propagation="SUPPORTS" />
+			<tx:method name="datagrid*" propagation="SUPPORTS" />
+
+			<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>-->
+	<!--<aop:config>
+		<aop:pointcut id="transactionPointcut"
+			expression="execution(* com.xz.*.service..*Impl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut"
+			advice-ref="transactionAdvice" />
+	</aop:config>-->
+
+</beans>
