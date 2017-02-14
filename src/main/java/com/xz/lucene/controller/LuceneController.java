@@ -48,6 +48,7 @@ public class LuceneController {
 
     @RequestMapping("/index.do")
     public String createIndex() {
+        System.out.print("1");
         File file = new File(INDEX_DIR);
         if (file.exists()) {
             file.delete();
